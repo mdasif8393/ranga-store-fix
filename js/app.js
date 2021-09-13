@@ -1,5 +1,5 @@
 const loadProducts = () => {
-  const url = `https://fakestoreapi.com/products`;
+  const url = `https://raw.githubusercontent.com/ProgrammingHero1/ranga-store-api/main/ranga-api.json?fbclid=IwAR0R57xZyJlWkhz39ZYZpX27b6W5FvkYbeSD7oELQJOeHb5b_2Jk7T4hhJY`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => showProducts(data));
@@ -32,6 +32,7 @@ const addToCart = (id, price) => {
   updatePrice("price", price);
 
   updateTaxAndCharge();
+  updateTotal();
   document.getElementById("total-Products").innerText = count;
 };
 
@@ -47,11 +48,12 @@ const updatePrice = (id, value) => {
   const convertPrice = parseFloat(value);
   const total = convertedOldPrice + convertPrice;
   document.getElementById(id).innerText = total.toFixed(2) ;
+  updateTotal();
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  document.getElementById(id).innerText = value;
 };
 
 // update delivery charge and total Tax
@@ -59,16 +61,17 @@ const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
   if (priceConverted > 200) {
     setInnerText("delivery-charge", 30);
-    setInnerText("total-tax", priceConverted * 0.2);
+    setInnerText("total-tax", (priceConverted * 0.2).toFixed(2));
   }
   if (priceConverted > 400) {
     setInnerText("delivery-charge", 50);
-    setInnerText("total-tax", priceConverted * 0.3);
+    setInnerText("total-tax", (priceConverted * 0.3).toFixed(2));
   }
   if (priceConverted > 500) {
     setInnerText("delivery-charge", 60);
-    setInnerText("total-tax", priceConverted * 0.4);
+    setInnerText("total-tax", (priceConverted * 0.4).toFixed(2));
   }
+  updateTotal();
 };
 
 //grandTotal update function
@@ -78,3 +81,5 @@ const updateTotal = () => {
     getInputValue("total-tax");
   document.getElementById("total").innerText = grandTotal;
 };
+
+updateTotal();
