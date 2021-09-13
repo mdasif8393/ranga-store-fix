@@ -1,3 +1,4 @@
+// Data Load from Api
 const loadProducts = () => {
   const url = `https://raw.githubusercontent.com/ProgrammingHero1/ranga-store-api/main/ranga-api.json?fbclid=IwAR0R57xZyJlWkhz39ZYZpX27b6W5FvkYbeSD7oELQJOeHb5b_2Jk7T4hhJY`;
   fetch(url)
@@ -8,12 +9,16 @@ loadProducts();
 
 // show all product in UI 
 const showProducts = (products) => {
+
   const allProducts = products.map((pd) => pd);
+
   for (const product of allProducts) {
-    console.log(product.rating.rate , product.rating.count);
     const image = product.image;
+
     const div = document.createElement("div");
+
     div.classList.add("product");
+
     div.innerHTML = `<div class="single-product">
       <div>
     <img class="product-image" src=${image}></img>
@@ -25,9 +30,12 @@ const showProducts = (products) => {
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
       <button id="details-btn" class="btn btn-info">Details</button></div>
       `;
+
     document.getElementById("all-products").appendChild(div);
   }
 };
+
+//Added products number to cart
 let count = 0;
 const addToCart = (id, price) => {
   count = count + 1;
@@ -35,12 +43,14 @@ const addToCart = (id, price) => {
 
   updateTaxAndCharge();
   updateTotal();
+
   document.getElementById("total-Products").innerText = count;
 };
 
+//Get value from items
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
-  const converted = parseInt(element);
+  const converted = parseFloat(element);
   return converted;
 };
 
@@ -61,6 +71,7 @@ const setInnerText = (id, value) => {
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
+
   if (priceConverted > 200) {
     setInnerText("delivery-charge", 30);
     setInnerText("total-tax", (priceConverted * 0.2).toFixed(2));
@@ -81,7 +92,7 @@ const updateTotal = () => {
   const grandTotal =
     getInputValue("price") + getInputValue("delivery-charge") +
     getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+  document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
 
 updateTotal();
